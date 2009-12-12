@@ -9,9 +9,9 @@ namespace Lounger.Couch
 {
     public static class CouchFactory
     {
-        private static const string _protocol = "http";
-        private static const string _host = "localhost";
-        private static const int _port = 5984;
+        private const string _protocol = "http";
+        private const string _host = "localhost";
+        private const int _port = 5984;
 
         public static CouchServer ConnectToServer(string protocol, string host, int port)
         {

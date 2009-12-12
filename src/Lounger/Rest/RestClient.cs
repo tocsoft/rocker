@@ -13,7 +13,8 @@ namespace Lounger.Rest
         {
             Url = url;
         }
-        public RestClient(string url) : this(new Uri(url))
+        public RestClient(string url)
+            : this(new Uri(url))
         {
         }
         public Uri Url { get; set; }
@@ -35,19 +36,30 @@ namespace Lounger.Rest
                 a = (s => (new BinaryWriter(s)).Write(Encoding.UTF8.GetBytes(data)));
 
 
-            Stream stream = DoRequest(query, method, a, contenttype);
-            System.IO.StreamReader sr = new StreamReader(stream);
+            return DoRequest(query, method, a, contenttype);
+
+        }
+        public string DoRequest(string query, string method, Action<Stream> data, string contenttype)
+        {
+
+            Stream stream = DoDataRequest(query, method, data, contenttype);
+            System.IO.StreamReader sr = new StreamReader(stream, Encoding.UTF8);
 
             return sr.ReadToEnd();
         }
 
-        public Stream DoRequest(string query, string method, Action<Stream> data, string contenttype)
+        public Stream DoDataRequest(string query, string method)
+        {
+            Action<Stream> a = null;
+            return DoDataRequest(query, method, a, null);
+        }
+        public Stream DoDataRequest(string query, string method, Action<Stream> data, string contenttype)
         {
             HttpWebRequest req = WebRequest.Create(Url.AppendPart(query)) as HttpWebRequest;
             req.Method = method;
-            
+
             //req.Timeout = System.Threading.Timeout.Infinite;
-            if (!string.IsNullOrEmpty(contenttype ))
+            if (!string.IsNullOrEmpty(contenttype))
                 req.ContentType = contenttype;
 
             if (data != null)
@@ -60,7 +72,12 @@ namespace Lounger.Rest
 
             HttpWebResponse resp = req.GetResponse() as HttpWebResponse;
 
-            return resp.GetResponseStream();
-        }     
+            if (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created)
+                return resp.GetResponseStream();
+
+            throw new RestException(resp.StatusCode, resp.StatusDescription);
+            
+        }
+
     }
 }

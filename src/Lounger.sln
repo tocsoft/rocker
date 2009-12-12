@@ -5,7 +5,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lounger", "Lounger\Lounger.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lounger.Tests", "Lounger.Tests\Lounger.Tests.csproj", "{8FF39685-6DFD-41E1-8B5A-B247EFBFC180}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E970665-F57F-499F-9CBA-559FABFD2F8A}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Lounger.vsmdi = Lounger.vsmdi
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Lounger.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -19,6 +30,10 @@ Global
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF39685-6DFD-41E1-8B5A-B247EFBFC180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF39685-6DFD-41E1-8B5A-B247EFBFC180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF39685-6DFD-41E1-8B5A-B247EFBFC180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF39685-6DFD-41E1-8B5A-B247EFBFC180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

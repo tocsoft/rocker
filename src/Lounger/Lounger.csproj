@@ -51,10 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Couch\RevisionInfo.cs" />
     <Compile Include="Couch\CouchDatabase.cs" />
+    <Compile Include="Couch\CouchFactory.cs" />
     <Compile Include="Couch\CouchServer.cs" />
     <Compile Include="Couch\DatabaseInfo.cs" />
     <Compile Include="Couch\DocumentInfo.cs" />
+    <Compile Include="Couch\Exceptions\CouchException.cs" />
     <Compile Include="Couch\Map.cs" />
     <Compile Include="Couch\View.cs" />
     <Compile Include="Json\ISerializer.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\IRestClient.cs" />
     <Compile Include="Rest\RestClient.cs" />
+    <Compile Include="Rest\RestException.cs" />
     <Compile Include="UriExtentions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

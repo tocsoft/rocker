@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lounger.Couch;
+using System.IO;
 
 namespace Sample
 {
@@ -12,14 +13,11 @@ namespace Sample
         {
             CouchDatabase db = CouchFactory.ConnectToDatabase("lounger");
 
-            Profile c = new Profile()
-            {
-               Name="scott"
-            };
-            c.Stack.Add("sdsd", "sdsd");
-
-         //   var t = db.SaveDocument(c);
             var lst = db.GetView<string, Profile>("profiles", "all");
+
+            db.SaveAttachment(lst.rows[0].Value,"sig1.png","image/png",File.Open("sig1.png", FileMode.Open));
+
+            db.GetAttachment(lst.rows[0].Value, "sig1.png");
         }
     }
 

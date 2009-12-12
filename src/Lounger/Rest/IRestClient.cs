@@ -10,8 +10,10 @@ namespace Lounger.Rest
     {
         IRestClient SubClient(string path);
 
+        string DoRequest(string query, string method, Action<Stream> data, string contentType);
         string DoRequest(string query, string method, string data, string contentType);
         string DoRequest(string query, string method);
-        Stream DoRequest(string query, string method, Action<Stream> data, string contentType);
+        Stream DoDataRequest(string query, string method);
+        Stream DoDataRequest(string query, string method, Action<Stream> data, string contentType);
     }
 }
