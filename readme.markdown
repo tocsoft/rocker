@@ -8,7 +8,9 @@ Status
 
 still In *very* early development. 
 
+
+
 ToDo
 -----------------
-* Add support for attachments
-
+* support for authentication (would help if i understud how couchDB handled authenticatoin in the outset :S)
+* add query parameters to views, keys etc.

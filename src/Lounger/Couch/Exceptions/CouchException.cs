@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Lounger.Rest;
+using Rocker.Rest;
 
-namespace Lounger.Couch.Exceptions
+namespace Rocker.Couch.Exceptions
 {
     public class CouchException : Exception
     {

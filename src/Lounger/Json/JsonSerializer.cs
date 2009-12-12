@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Lounger.Json
+namespace Rocker.Json
 {
     public class JsonSerializer : ISerializer
     {

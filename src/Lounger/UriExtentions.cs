@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lounger
+namespace Rocker
 {
     public static class UriExtentions
     {

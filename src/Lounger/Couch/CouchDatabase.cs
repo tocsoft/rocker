@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Lounger.Rest;
-using Lounger.Json;
+using Rocker.Rest;
+using Rocker.Json;
 using System.Net;
 using System.IO;
-using Lounger.Couch.Exceptions;
+using Rocker.Couch.Exceptions;
 
-namespace Lounger.Couch
+namespace Rocker.Couch
 {
     public sealed class CouchDatabase
     {

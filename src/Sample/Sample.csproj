@@ -49,9 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lounger\Lounger.csproj">
+    <ProjectReference Include="..\Lounger\Rocker.csproj">
       <Project>{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}</Project>
-      <Name>Lounger</Name>
+      <Name>Rocker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

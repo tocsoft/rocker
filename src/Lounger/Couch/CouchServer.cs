@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Lounger.Rest;
-using Lounger.Json;
+using Rocker.Rest;
+using Rocker.Json;
 
-namespace Lounger.Couch
+namespace Rocker.Couch
 {
     public sealed class CouchServer
     {

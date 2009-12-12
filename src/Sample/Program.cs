@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Lounger.Couch;
+using Rocker.Couch;
 using System.IO;
 
 namespace Sample
@@ -11,7 +11,7 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            CouchDatabase db = CouchFactory.ConnectToDatabase("lounger");
+            CouchDatabase db = CouchFactory.ConnectToDatabase("Rocker");
 
             var lst = db.GetView<string, Profile>("profiles", "all");
 
