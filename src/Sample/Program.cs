@@ -11,7 +11,7 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            CouchDatabase db = CouchFactory.ConnectToDatabase("Rocker");
+            CouchDatabase db = CouchFactory.ConnectToDatabase("rocker");
 
             var lst = db.GetView<string, Profile>("profiles", "all");
 

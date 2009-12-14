@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocker", "Lounger\Rocker.csproj", "{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E970665-F57F-499F-9CBA-559FABFD2F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocker", "Rocker\Rocker.csproj", "{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A4C766-C6C3-40BC-9EFF-29E509C02FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

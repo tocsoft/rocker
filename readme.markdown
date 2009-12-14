@@ -1,16 +1,17 @@
-Lounger
+Rocker
 -----------------
 
-lounger is a warpper library around the apache CouchDB document Database.
+rocker is a wrapper library around the apache CouchDB document Database.
 
-Status
------------------
+==Status==
+
 
 still In *very* early development. 
 
 
 
-ToDo
------------------
-* support for authentication (would help if i understud how couchDB handled authenticatoin in the outset :S)
+==ToDo==
+
+* support for authentication (just need to figure out how to work with cochDBs authenication model first)
 * add query parameters to views, keys etc.
+* update view results to work with "incluce_docs"
