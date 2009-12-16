@@ -29,7 +29,7 @@ namespace Rocker.Couch
             string id = null;
             string rev = null;
             if (info == null)
-                id = typeof(T).FullName + "$" + Guid.NewGuid();
+                id = typeof(T).FullName + "/" + Guid.NewGuid();
             else
             {
                 id = info._id;
@@ -136,11 +136,16 @@ namespace Rocker.Couch
             }
         }
 
-        public View<TKey, TValue> GetView<TKey, TValue>(string document, string view)
+        public View<TKey, TValue> GetView<TKey, TValue>(string name, string view)
+        {
+            return GetView<TKey, TValue>(new ViewQuery(name, view));
+        }
+
+        public View<TKey, TValue> GetView<TKey, TValue>(ViewQuery query)
         {
             try
             {
-                string ret = _client.DoRequest(string.Format("_design/{0}/_view/{1}", EncodeId(document), EncodeId(view)), "GET");
+                string ret = _client.DoRequest(query.GenerateQuery(), "GET");
                 View<TKey, RevisionInfo> infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
                 View<TKey, TValue> results = _serializer.Deserialize<View<TKey, TValue>>(ret);
 

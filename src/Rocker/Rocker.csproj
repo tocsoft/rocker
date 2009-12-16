@@ -60,6 +60,7 @@
     <Compile Include="Couch\Exceptions\CouchException.cs" />
     <Compile Include="Couch\Map.cs" />
     <Compile Include="Couch\View.cs" />
+    <Compile Include="Couch\ViewQuery.cs" />
     <Compile Include="Json\ISerializer.cs" />
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
