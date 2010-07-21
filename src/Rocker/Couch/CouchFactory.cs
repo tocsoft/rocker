@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Rocker.Rest;
 using Rocker.Json;
+using Rocker;
 
 namespace Rocker.Couch
 {
@@ -19,32 +20,59 @@ namespace Rocker.Couch
             return new CouchServer(rest, new JsonSerializer());
         }
 
-        public static CouchServer ConnectToServer(string host)
-        {
-            return ConnectToServer(_protocol, host, _port);
-        }
         public static CouchServer ConnectToServer()
         {
-            return ConnectToServer(_protocol, _host, _port);
+            return ConnectToServer("");
         }
 
-        public static CouchServer ConnectToServer(string host, int port)
+        public static CouchServer ConnectToServer(string connectionString)
         {
-            return ConnectToServer(_protocol, host, port);
+            var vals = connectionString.ToDictionary(true);
+
+
+            var protocol = _protocol;
+            if (vals.ContainsKey("protcol"))
+                protocol = vals["protcol"];
+
+            var host = _host;
+            if (vals.ContainsKey("host"))
+                host = vals["host"];
+
+            var port = _port;
+            if (vals.ContainsKey("port"))
+            {
+                if(!int.TryParse(vals["port"], out port))
+                    port = _port;
+            }
+
+           // var database = vals["database"];
+
+            return ConnectToServer(protocol, host, port);
         }
 
-        public static CouchDatabase ConnectToDatabase(string host, string database)
+        public static CouchDatabase ConnectToDatabase(string connectionString)
         {
-            return ConnectToServer(_protocol, host, _port).ConnectToDatabase(database);
-        }
-        public static CouchDatabase ConnectToDatabase(string database)
-        {
-            return ConnectToServer(_protocol, _host, _port).ConnectToDatabase(database);
-        }
+            var vals = connectionString.ToDictionary(true);
 
-        public static CouchDatabase ConnectToDatabase(string host, int port, string database)
-        {
-            return ConnectToServer(_protocol, host, port).ConnectToDatabase(database);
+
+            var protocol = _protocol;
+            if (vals.ContainsKey("protcol"))
+                protocol = vals["protcol"];
+
+            var host = _host;
+            if (vals.ContainsKey("host"))
+                host = vals["host"];
+
+            var port = _port;
+            if (vals.ContainsKey("port"))
+            {
+                if(!int.TryParse(vals["port"], out port))
+                    port = _port;
+            }
+
+            var database = vals["database"];
+
+            return ConnectToServer(protocol, host, port).ConnectToDatabase(database);
         }
 
 

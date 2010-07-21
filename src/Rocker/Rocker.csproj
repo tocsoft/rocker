@@ -67,7 +67,11 @@
     <Compile Include="Rest\IRestClient.cs" />
     <Compile Include="Rest\RestClient.cs" />
     <Compile Include="Rest\RestException.cs" />
+    <Compile Include="StringExtentions.cs" />
     <Compile Include="UriExtentions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Couch\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

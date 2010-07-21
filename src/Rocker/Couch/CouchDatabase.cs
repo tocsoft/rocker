@@ -29,7 +29,7 @@ namespace Rocker.Couch
             string id = null;
             string rev = null;
             if (info == null)
-                id = typeof(T).FullName + "/" + Guid.NewGuid();
+                id = typeof(T).FullName + "~" + Guid.NewGuid();
             else
             {
                 id = info._id;
@@ -50,7 +50,7 @@ namespace Rocker.Couch
             {
                 string json = _serializer.Serialize(item);
                 if (!string.IsNullOrEmpty(rev))
-                    json = string.Concat("{ ", "\"_rev\":\"", rev,"\",", json.Substring(1));
+                    json = string.Concat("{ \"~type\":\"", item.GetType().Name ,"\"\"_rev\":\"", rev,"\",", json.Substring(1));
                 string ret = _client.DoRequest(id, "PUT", json , "application/json");
                 info = _serializer.Deserialize<DocumentInfo>(ret).Convert();
                 UpdateInfoStore(item, info);
@@ -62,6 +62,8 @@ namespace Rocker.Couch
 
             return info;
         }
+
+      
 
         public T GetDocument<T>(string id)
         {
@@ -136,20 +138,84 @@ namespace Rocker.Couch
             }
         }
 
+        public IEnumerable<T> GetDocuments<T>(params string[] ids)
+        {
+            var res = GetView<string, T>(new ViewQuery("", "").SetUrlPattern("_all_docs").IncludeDocs().Keys(ids));
+            return res.rows.Select(x=>x.Doc);
+        }
+
+        public View<TKey, TValue> GetView<TKey, TValue>(string name, string view, Func<ViewQuery, ViewQuery> query)
+        {
+            return GetView<TKey, TValue>(query(new ViewQuery(name, view)));
+        }
+
         public View<TKey, TValue> GetView<TKey, TValue>(string name, string view)
         {
             return GetView<TKey, TValue>(new ViewQuery(name, view));
+        }
+        
+        public MultiView<TKey> GetView<TKey>(ViewQuery query, Func<ISerializer, TKey, string, object> map)
+        {
+            try
+            {
+                string qs = query.GenerateQuery();
+                string meth = query.Method;
+                string data = null;
+                if (query.RequestData != null)
+                    data = _serializer.Serialize(query.RequestData);
+
+                string ret = null;
+                if (data != null)
+                    ret = _client.DoRequest(qs, meth, data, "application/json");
+                else
+                    ret = _client.DoRequest(qs, meth);
+
+                View<TKey, RevisionInfo> infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
+
+                var res = _serializer.Deserialize<View<TKey, object>>(ret);
+                
+                List<object> rows = new List<object>();
+                foreach (var r in res.rows)
+                    rows.Add(map(_serializer, r.Key, r.Value.ToString()));
+
+                MultiView<TKey> results = new MultiView<TKey>()
+                {
+                    offset = res.offset,
+                    total_rows = res.total_rows,
+                };
+                for (int i = 0; i < infoView.rows.Length; i++)
+                {
+                    UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
+                }
+
+                return results;
+            }
+            catch (Rest.RestException ex)
+            {
+                throw For(ex);
+            }
         }
 
         public View<TKey, TValue> GetView<TKey, TValue>(ViewQuery query)
         {
             try
             {
-                string ret = _client.DoRequest(query.GenerateQuery(), "GET");
+                string qs = query.GenerateQuery();
+                string meth = query.Method;
+                string data = null;
+                if (query.RequestData != null)
+                    data = _serializer.Serialize(query.RequestData);
+
+                string ret = null;
+                if (data != null)
+                    ret = _client.DoRequest(qs, meth, data, "application/json");
+                else
+                    ret = _client.DoRequest(qs, meth);
+
                 View<TKey, RevisionInfo> infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
                 View<TKey, TValue> results = _serializer.Deserialize<View<TKey, TValue>>(ret);
 
-                for (int i = 0; i < infoView.total_rows; i++)
+                for (int i = 0; i < infoView.rows.Length; i++)
                 {
                     UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
                 }
@@ -172,7 +238,7 @@ namespace Rocker.Couch
 
                 if (infoView.rows.Length > 0 && infoView.rows[0].Value._id != null)
                 {
-                    for (int i = 0; i < infoView.total_rows; i++)
+                    for (int i = 0; i < infoView.rows.Length; i++)
                     {
                         UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
                     }

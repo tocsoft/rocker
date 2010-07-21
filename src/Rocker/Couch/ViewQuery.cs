@@ -7,23 +7,45 @@ namespace Rocker.Couch
 {
     public class ViewQuery
     {
-        private string _key;
+        private List<string> _keys;
         private string _endKey;
         private string _name;
         private string _view;
         private int? _take;
         private int? _skip;
+        private bool _include_docs;
         private bool _descending;
+        private string _urlpattern = "_design/{0}/_view/{1}";
+        private bool _multikey = false;
+        public bool IncludingDocs { get { return _include_docs; } }
         public ViewQuery(string name, string view)
         {
             _name = name;
             _view = view;
             _descending = false;
+            _include_docs = false;
         }
 
         public ViewQuery Key(string key)
         {
-            _key = key;
+            if (_keys == null)
+                _keys = new List<string>();
+            else
+                _multikey = true;
+
+            _keys.Add(key);
+            
+            return this;
+        }
+
+        public ViewQuery Keys(string[] keys)
+        {
+            if (_keys == null)
+                _keys = new List<string>();
+
+            _keys.AddRange(keys);
+            _multikey = true;
+
             return this;
         }
 
@@ -44,29 +66,71 @@ namespace Rocker.Couch
             _skip = count;
             return this;
         }
-        
-        public ViewQuery OrderDescending()
+
+        public ViewQuery IncludeDocs()
         {
-            _descending = true;
+            _include_docs = true;
             return this;
         }
 
+        public ViewQuery OrderDescending(bool desc)
+        {
+            _descending = desc;
+            return this;
+        }
+        public ViewQuery OrderDescending()
+        {
+            return OrderDescending(true);
+        }
 
+        public string Method
+        {
+            get;
+            private set;
+        }
+
+        public object RequestData
+        {
+            get;
+            private set;
+        }
+        
+        public ViewQuery SetUrlPattern(string pattern)
+        {
+            _urlpattern = pattern;
+            return this;
+        }
         public string GenerateQuery()
         {
-            string q = string.Format("_design/{0}/_view/{0}", _name, _view);
-            if (!string.IsNullOrEmpty(_key))
+            string q = "";
+
+                q = string.Format(_urlpattern, _name, _view);
+
+                Method = "GET";
+
+            if (_keys != null)
             {
-                if (string.IsNullOrEmpty(_endKey))
+                if (!_multikey)
                 {
-                    q = AddQueryStirng(q, "key", _key);
+
+                    RequestData = null;
+                    if (string.IsNullOrEmpty(_endKey))
+                    {
+                        q = AddQueryStirng(q, "key", _keys.First());
+                    }
+                    else
+                    {
+
+                        q = AddQueryStirng(q, "startkey", _keys.First());
+
+                        q = AddQueryStirng(q, "endkey", _endKey);
+                    }
                 }
                 else
                 {
+                    RequestData = (new { keys = _keys });
 
-                    q = AddQueryStirng(q, "startkey", _key);
-
-                    q = AddQueryStirng(q, "endkey", _endKey);
+                    Method = "POST";
                 }
             }
 
@@ -76,8 +140,9 @@ namespace Rocker.Couch
             if (_skip.HasValue)
                 q = AddQueryStirng(q, "skip", _skip.Value);
             if (_descending)
-                q = AddQueryStirng(q, "descending", true);
-
+                q = AddQueryStirng(q, "descending", "true");
+            if (_include_docs)
+                q = AddQueryStirng(q, "include_docs", "true");
             return q;
         }
 

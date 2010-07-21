@@ -10,7 +10,6 @@ namespace Rocker.Couch
         public bool Ok { get; set; }
         public string Id { get; set; }
         public string Rev { get; set; }
-
         public RevisionInfo Convert()
         {
             return new RevisionInfo() { _id = Id, _rev = Rev };

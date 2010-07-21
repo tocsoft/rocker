@@ -15,6 +15,7 @@ namespace Rocker.Json
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
         }
 
+
         public string Serialize(object obj)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
