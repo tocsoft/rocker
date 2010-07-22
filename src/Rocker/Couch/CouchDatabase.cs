@@ -14,33 +14,34 @@ namespace Rocker.Couch
     {
         readonly IRestClient _client;
         readonly ISerializer _serializer;
-        Dictionary<object, RevisionInfo> _info = new Dictionary<object, RevisionInfo>();
+        CouchRevisionStore _revisionStore;
         public CouchDatabase(IRestClient client, ISerializer serializer)
         {
             _serializer = serializer;
             _client = client;
+            _revisionStore = new CouchRevisionStore();
         }
 
 
         public RevisionInfo SaveDocument<T>(T item)
         {
-            RevisionInfo info = GetInfo(item);
-            
-            string id = null;
-            string rev = null;
-            if (info == null)
-                id = typeof(T).FullName + "~" + Guid.NewGuid();
-            else
-            {
-                id = info._id;
-                rev = info._rev;
-            } 
-            return SaveDocument(item, id, rev);
+            return SaveDocument(item, typeof(T).FullName + "~" + Guid.NewGuid());   
         }
 
         public RevisionInfo SaveDocument<T>(T item, string id)
         {
-            return SaveDocument(item, id, null);
+            RevisionInfo info = GetInfo(item);
+
+            string lid = null;
+            string rev = null;
+            if (info == null)
+                lid = id;
+            else
+            {
+                lid = info._id;
+                rev = info._rev;
+            }
+            return SaveDocument(item, lid, rev);
         }
 
         public RevisionInfo SaveDocument<T>(T item, string id, string rev)
@@ -50,8 +51,11 @@ namespace Rocker.Couch
             {
                 string json = _serializer.Serialize(item);
                 if (!string.IsNullOrEmpty(rev))
-                    json = string.Concat("{ \"~type\":\"", item.GetType().Name ,"\"\"_rev\":\"", rev,"\",", json.Substring(1));
-                string ret = _client.DoRequest(id, "PUT", json , "application/json");
+                    json = string.Concat("{ \"~type\":\"", item.GetType().Name ,"\",\"_rev\":\"", rev,"\",", json.Substring(1));
+                else
+                    json = string.Concat("{ \"~type\":\"", item.GetType().Name, "\",", json.Substring(1));
+
+                string ret = _client.DoRequest(id, "PUT", json, "application/json");
                 info = _serializer.Deserialize<DocumentInfo>(ret).Convert();
                 UpdateInfoStore(item, info);
             }
@@ -254,10 +258,7 @@ namespace Rocker.Couch
 
         public RevisionInfo GetInfo(object item)
         {
-            if (_info.ContainsKey(item))
-                return _info[item];
-            else
-                return null;
+            return _revisionStore.Lookup(item);
         }
 
         public DatabaseInfo GetInfo()
@@ -275,10 +276,7 @@ namespace Rocker.Couch
 
         private void UpdateInfoStore(object item, RevisionInfo info)
         {
-            if (_info.ContainsKey(item))
-                _info[item] = info;
-            else
-                _info.Add(item, info);
+            _revisionStore.Update(item, info);
         }
         
 
