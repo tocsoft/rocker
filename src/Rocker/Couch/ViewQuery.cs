@@ -120,10 +120,18 @@ namespace Rocker.Couch
                     }
                     else
                     {
+                        if (_descending)
+                        {
+                            q = AddQueryStirng(q, "endkey", _keys.First());
 
-                        q = AddQueryStirng(q, "startkey", _keys.First());
+                            q = AddQueryStirng(q, "startkey", _endKey);
+                        }
+                        else
+                        {
+                            q = AddQueryStirng(q, "startkey", _keys.First());
 
-                        q = AddQueryStirng(q, "endkey", _endKey);
+                            q = AddQueryStirng(q, "endkey", _endKey);
+                        }
                     }
                 }
                 else
