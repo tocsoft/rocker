@@ -5,6 +5,7 @@ using System.Text;
 using Rocker.Rest;
 using Rocker.Json;
 using Rocker;
+using System.Configuration;
 
 namespace Rocker.Couch
 {
@@ -52,8 +53,14 @@ namespace Rocker.Couch
 
         public static CouchDatabase ConnectToDatabase(string connectionString)
         {
-            var vals = connectionString.ToDictionary(true);
+            var localconstring = connectionString;
+            var constrings = ConfigurationManager.ConnectionStrings[connectionString];
+            if (!(constrings != null && !string.IsNullOrEmpty(constrings.ConnectionString)))
+            {
+                localconstring = constrings.ConnectionString;
+            }
 
+            var vals = localconstring.ToDictionary(true);
 
             var protocol = _protocol;
             if (vals.ContainsKey("protcol"))
