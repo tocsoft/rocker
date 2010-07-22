@@ -3,14 +3,13 @@ Rocker
 
 rocker is a wrapper library around the apache CouchDB document Database.
 
-==Status
+==Status==
 
 
 still In *very* early development. 
 
 
 
-==ToDo
+==ToDo==
 
 * support for authentication (just need to figure out how to work with cochDBs authenication model first)
-* update view results to work with "incluce_docs"
