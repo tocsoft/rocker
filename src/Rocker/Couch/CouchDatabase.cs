@@ -173,7 +173,7 @@ namespace Rocker.Couch
                     ret = _client.DoRequest(qs, meth, data, "application/json");
                 else
                     ret = _client.DoRequest(qs, meth);
-
+                
                 View<TKey, RevisionInfo> infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
 
                 var res = _serializer.Deserialize<View<TKey, object>>(ret);
@@ -216,12 +216,19 @@ namespace Rocker.Couch
                 else
                     ret = _client.DoRequest(qs, meth);
 
-                View<TKey, RevisionInfo> infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
-                View<TKey, TValue> results = _serializer.Deserialize<View<TKey, TValue>>(ret);
-
-                for (int i = 0; i < infoView.rows.Length; i++)
+                View<TKey, RevisionInfo> infoView = null;
+                try
                 {
-                    UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
+                    infoView = _serializer.Deserialize<View<TKey, RevisionInfo>>(ret);
+                }
+                catch { }
+                View<TKey, TValue> results = _serializer.Deserialize<View<TKey, TValue>>(ret);
+                if (infoView != null)
+                {
+                    for (int i = 0; i < infoView.rows.Length; i++)
+                    {
+                        UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
+                    }
                 }
 
                 return results;
