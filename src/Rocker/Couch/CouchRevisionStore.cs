@@ -16,8 +16,8 @@ namespace Rocker.Couch
                 if (_info != null)
                     return _info;
                 if (System.Web.HttpContext.Current != null) 
-                { 
-                    return System.Web.HttpContext.Current.Items["CouchRevisionInfoStore"] as Dictionary<object, RevisionInfo>
+                {
+                    return System.Web.HttpContext.Current.Items["CouchRevisionInfoStore"] as Dictionary<object, RevisionInfo>;
                 }
 
                 _info = new Dictionary<object,RevisionInfo>();
