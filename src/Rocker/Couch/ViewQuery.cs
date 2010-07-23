@@ -18,6 +18,8 @@ namespace Rocker.Couch
         private string _urlpattern = "_design/{0}/_view/{1}";
         private bool _multikey = false;
         public bool IncludingDocs { get { return _include_docs; } }
+        private string _groupLevel;
+        private bool? _group;
         public ViewQuery(string name, string view)
         {
             _name = name;
@@ -82,6 +84,21 @@ namespace Rocker.Couch
         {
             return OrderDescending(true);
         }
+        public ViewQuery GroupLevel(int level)
+        { 
+            _groupLevel = level.ToString();
+            return this;
+        }
+        public ViewQuery Group(bool group)
+        { 
+            _group = group;
+            return this;
+        }
+        public ViewQuery Group()
+        { 
+            return this.Group(true);
+        }
+
 
         public string Method
         {
@@ -145,6 +162,12 @@ namespace Rocker.Couch
             if (_take.HasValue)
                 q = AddQueryStirng(q, "limit", _take.Value);
 
+            if (!string.IsNullOrEmpty(_groupLevel))
+                q = AddQueryStirng(q, "group_level", _groupLevel);
+            
+            if (_group.HasValue)
+                q = AddQueryStirng(q, "group", _group.Value);
+            
             if (_skip.HasValue)
                 q = AddQueryStirng(q, "skip", _skip.Value);
             if (_descending)
