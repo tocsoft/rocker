@@ -6,6 +6,7 @@ using Rocker.Rest;
 using Rocker.Json;
 using Rocker;
 using System.Configuration;
+using System.Net;
 
 namespace Rocker.Couch
 {
@@ -15,40 +16,16 @@ namespace Rocker.Couch
         private const string _host = "localhost";
         private const int _port = 5984;
 
-        public static CouchServer ConnectToServer(string protocol, string host, int port)
+        private static CouchServer ConnectToServer(string protocol, string host, int port)
         {
             var rest = new RestClient(new Uri(protocol + "://" + host + ":" + port.ToString()));
             return new CouchServer(rest, new JsonSerializer());
         }
 
-        public static CouchServer ConnectToServer()
+        private static CouchServer ConnectToServer(string protocol, string host, int port, string username, string password)
         {
-            return ConnectToServer("");
-        }
-
-        public static CouchServer ConnectToServer(string connectionString)
-        {
-            var vals = connectionString.ToDictionary(true);
-
-
-            var protocol = _protocol;
-            if (vals.ContainsKey("protcol"))
-                protocol = vals["protcol"];
-
-            var host = _host;
-            if (vals.ContainsKey("host"))
-                host = vals["host"];
-
-            var port = _port;
-            if (vals.ContainsKey("port"))
-            {
-                if(!int.TryParse(vals["port"], out port))
-                    port = _port;
-            }
-
-           // var database = vals["database"];
-
-            return ConnectToServer(protocol, host, port);
+            var rest = new RestClient(new Uri(protocol + "://" + host + ":" + port.ToString()), new NetworkCredential(username, password));
+            return new CouchServer(rest, new JsonSerializer());
         }
 
         public static CouchDatabase ConnectToDatabase(string connectionString)
@@ -77,9 +54,19 @@ namespace Rocker.Couch
                     port = _port;
             }
 
-            var database = vals["database"];
+            string username = null;
+            if (vals.ContainsKey("username"))
+                username = vals["username"];
 
-            return ConnectToServer(protocol, host, port).ConnectToDatabase(database);
+            var password = "";
+            if (vals.ContainsKey("password"))
+                password = vals["password"];
+
+            var database = vals["database"];
+            if(string.IsNullOrEmpty(username))
+                return ConnectToServer(protocol, host, port).ConnectToDatabase(database);
+            else
+                return ConnectToServer(protocol, host, port, username, password).ConnectToDatabase(database);
         }
 
 

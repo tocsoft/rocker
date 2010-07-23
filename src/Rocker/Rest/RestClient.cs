@@ -9,15 +9,27 @@ namespace Rocker.Rest
 {
     public class RestClient : IRestClient
     {
-        public RestClient(Uri url)
+
+
+        public RestClient(Uri url, ICredentials credentials)
         {
             Url = url;
+            Credentials = credentials;
         }
-        public RestClient(string url)
-            : this(new Uri(url))
+        public RestClient(Uri url) : this(url, null)
         {
         }
+        public RestClient(string url)
+            : this(url, null)
+        {
+        }
+        public RestClient(string url, ICredentials credentials)
+            : this(new Uri(url), credentials)
+        {
+        }
+
         public Uri Url { get; set; }
+        public ICredentials Credentials { get; set; }
 
 
         public IRestClient SubClient(string path)
@@ -56,6 +68,10 @@ namespace Rocker.Rest
         public Stream DoDataRequest(string query, string method, Action<Stream> data, string contenttype)
         {
             HttpWebRequest req = WebRequest.Create(Url.AppendPart(query)) as HttpWebRequest;
+            
+            if (Credentials != null)
+                req.Credentials = Credentials;
+            
             req.Method = method;
 
             //req.Timeout = System.Threading.Timeout.Infinite;
