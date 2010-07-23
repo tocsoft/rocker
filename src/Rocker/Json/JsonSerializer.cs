@@ -8,7 +8,16 @@ namespace Rocker.Json
 {
     public class JsonSerializer : ISerializer
     {
+        private static Newtonsoft.Json.JsonSerializerSettings _settings;
+        
         #region ISerializer Members
+        static JsonSerializer()
+        {
+            _settings = new Newtonsoft.Json.JsonSerializerSettings();
+            _settings.Converters.Add(new Newtonsoft.Json.Converters.IsoDateTimeConverter());
+            _settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+
+        }
 
         public T Deserialize<T>(string s)
         {
@@ -18,7 +27,7 @@ namespace Rocker.Json
 
         public string Serialize(object obj)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented, _settings);
         }
 
         #endregion
