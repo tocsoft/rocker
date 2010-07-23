@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Couch\CouchRevisionStore.cs" />
     <Compile Include="Couch\RevisionInfo.cs" />
     <Compile Include="Couch\CouchDatabase.cs" />
     <Compile Include="Couch\CouchFactory.cs" />
