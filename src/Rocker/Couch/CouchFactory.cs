@@ -31,10 +31,11 @@ namespace Rocker.Couch
         public static CouchDatabase ConnectToDatabase(string connectionString)
         {
             var localconstring = connectionString;
-            var constrings = ConfigurationManager.ConnectionStrings[connectionString];
-            if (!(constrings != null && !string.IsNullOrEmpty(constrings.ConnectionString)))
+            var connobject = ConfigurationManager.ConnectionStrings[connectionString];
+
+            if (connobject != null && !string.IsNullOrEmpty(connobject.ConnectionString))
             {
-                localconstring = constrings.ConnectionString;
+                localconstring = connobject.ConnectionString;
             }
 
             var vals = localconstring.ToDictionary(true);
