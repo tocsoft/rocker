@@ -27,8 +27,8 @@ namespace Rocker.Couch
 
         public RevisionInfo Lookup(object obj)
         {
-            if (store.ContainsKey(store))
-                return store[store];
+            if (store.ContainsKey(obj))
+                return store[obj];
             else
                 return null;
         }
