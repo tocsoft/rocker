@@ -19,4 +19,18 @@ namespace Rocker.Couch.Exceptions
 
         }
     }
+
+    public class NotFoundCouchException : CouchException
+    {
+        public NotFoundCouchException(Exception innerException)
+            : this("Document not found", innerException)
+        {
+
+        }
+        public NotFoundCouchException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+
+        }
+    }
 }

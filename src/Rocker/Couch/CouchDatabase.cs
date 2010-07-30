@@ -302,6 +302,10 @@ namespace Rocker.Couch
         private static CouchException For(Rest.RestException restException)
         {
             //TODO encpsulate all the status code/description that are returned by couch into descriptive exceptions!!!
+            if (restException.Status == HttpStatusCode.NotFound)
+            {
+                return new NotFoundCouchException(restException);
+            }
             return new CouchException(restException);
         }
 

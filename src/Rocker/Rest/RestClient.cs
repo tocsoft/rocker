@@ -85,13 +85,21 @@ namespace Rocker.Rest
                     data.Invoke(ps);
                 }
             }
+            try
+            {
+                HttpWebResponse resp = req.GetResponse() as HttpWebResponse;
 
-            HttpWebResponse resp = req.GetResponse() as HttpWebResponse;
+                if (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created)
+                    return resp.GetResponseStream();
 
-            if (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created)
-                return resp.GetResponseStream();
-
-            throw new RestException(resp.StatusCode, resp.StatusDescription);
+                throw new RestException(resp.StatusCode, resp.StatusDescription);
+            }
+            catch (WebException ex)
+            {
+                HttpWebResponse resp = ex.Response as HttpWebResponse;
+                throw new RestException(resp.StatusCode, resp.StatusDescription);
+            }
+            
             
         }
 
