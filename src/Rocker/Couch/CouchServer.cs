@@ -11,11 +11,13 @@ namespace Rocker.Couch
     {
         readonly ISerializer _serializer;
         readonly IRestClient _client;
+        readonly IConnectionDetails _connection;
 
-        public CouchServer(IRestClient client, ISerializer serializer)
+        public CouchServer(IRestClient client, ISerializer serializer, IConnectionDetails connection)
         {
             _serializer = serializer;
             _client = client;
+            _connection = connection;
         }
 
         public string[] GetDatabaseNames()
@@ -26,7 +28,6 @@ namespace Rocker.Couch
 
         public void CreateDatabase(string name)
         {
-
             _client.DoRequest(name + "/", "PUT");
 
         }
@@ -35,5 +36,58 @@ namespace Rocker.Couch
             var server = _client.SubClient(databaseName);
             return new CouchDatabase(server, _serializer);
         }
+
+        public void Replicate(
+           IConnectionDetails from,
+           IConnectionDetails to,
+           string filter,
+           object filterquery)
+        {
+            if (string.IsNullOrEmpty(filter))
+                _client.DoRequest("_replicate", "POST", _serializer.Serialize(new
+                {
+                    source = string.Concat(from.ToUriString(true), "/", from.Database),
+                    target = string.Concat(to.ToUriString(true), "/", to.Database)
+                }), "application/json");
+            else
+                _client.DoRequest("_replicate", "POST", _serializer.Serialize(new
+                {
+                    source = string.Concat(from.ToUriString(true), "/", from.Database),
+                    target = string.Concat(to.ToUriString(true), "/", to.Database),
+                    filter = filter,
+                    query_params = filterquery
+                }), "application/json");
+        }
+        public void Replicate(
+           IConnectionDetails from,
+           IConnectionDetails to)
+        {
+            Replicate(from, to, null, null);
+        }
+        public void ReplicateTo(
+           IConnectionDetails destination,
+           string filter,
+           object filterquery)
+        {
+            Replicate(_connection, destination, filter, filterquery);
+        }
+        public void ReplicateFrom(
+           IConnectionDetails source,
+           string filter,
+           object filterquery)
+        {
+            Replicate(source, _connection, filter, filterquery);
+        }
+        public void ReplicateTo(
+           IConnectionDetails destination)
+        {
+            Replicate(_connection, destination, null, null);
+        }
+        public void ReplicateFrom(
+           IConnectionDetails source)
+        {
+            Replicate(source, _connection, null, null);
+        }
+
     }
 }

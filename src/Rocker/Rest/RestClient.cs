@@ -10,7 +10,9 @@ namespace Rocker.Rest
     public class RestClient : IRestClient
     {
 
-
+        public RestClient(IConnectionDetails connectionDetails) : this(connectionDetails.ToUri(), connectionDetails.GetCredentials())
+        { 
+        }
         public RestClient(Uri url, ICredentials credentials)
         {
             Url = url;
