@@ -20,6 +20,7 @@ namespace Rocker.Couch
         public bool IncludingDocs { get { return _include_docs; } }
         private string _groupLevel;
         private bool? _group;
+        private bool? _reduce;
         public ViewQuery(string name, string view)
         {
             _name = name;
@@ -99,6 +100,16 @@ namespace Rocker.Couch
             return this.Group(true);
         }
 
+        public ViewQuery Reduce(bool reduce)
+        {
+            _reduce = reduce;
+            return this;
+        }
+        public ViewQuery Reduce()
+        {
+            return this.Reduce(true);
+        }
+
 
         public string Method
         {
@@ -162,11 +173,22 @@ namespace Rocker.Couch
             if (_take.HasValue)
                 q = AddQueryStirng(q, "limit", _take.Value);
 
-            if (!string.IsNullOrEmpty(_groupLevel))
-                q = AddQueryStirng(q, "group_level", _groupLevel);
-            
-            if (_group.HasValue)
-                q = AddQueryStirng(q, "group", _group.Value);
+            if (_reduce.HasValue && !_reduce.Value)
+                q = AddQueryStirng(q, "reduce", "false");
+
+            if (!_reduce.HasValue || _reduce.Value)
+            {
+                if (!string.IsNullOrEmpty(_groupLevel))
+                    q = AddQueryStirng(q, "group_level", _groupLevel);
+
+                if (_group.HasValue)
+                {
+                    if (_group.Value)
+                        q = AddQueryStirng(q, "group", "true");
+                    else
+                        q = AddQueryStirng(q, "group", "false");
+                }
+            }
             
             if (_skip.HasValue)
                 q = AddQueryStirng(q, "skip", _skip.Value);
