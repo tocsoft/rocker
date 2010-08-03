@@ -189,6 +189,10 @@ namespace Rocker.Couch
                 };
                 for (int i = 0; i < infoView.rows.Length; i++)
                 {
+                    if (query.IncludingDocs)
+                    {
+                        UpdateInfoStore(results.rows[i].Doc, infoView.rows[i].Value);
+                    }
                     UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
                 }
 
@@ -227,6 +231,10 @@ namespace Rocker.Couch
                 {
                     for (int i = 0; i < infoView.rows.Length; i++)
                     {
+                        if (query.IncludingDocs)
+                        {
+                            UpdateInfoStore(results.rows[i].Doc, infoView.rows[i].Doc);
+                        }
                         UpdateInfoStore(results.rows[i].Value, infoView.rows[i].Value);
                     }
                 }
