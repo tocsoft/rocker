@@ -144,18 +144,18 @@ namespace Rocker.Couch
 
         public IEnumerable<T> GetDocuments<T>(params string[] ids)
         {
-            var res = GetView<string, T>(new ViewQuery("", "").SetUrlPattern("_all_docs").IncludeDocs().Keys(ids));
+            var res = GetView<string, T>(new ViewQuery("", "", _serializer).SetUrlPattern("_all_docs").IncludeDocs().Keys(ids));
             return res.rows.Select(x=>x.Doc);
         }
 
         public View<TKey, TValue> GetView<TKey, TValue>(string name, string view, Func<ViewQuery, ViewQuery> query)
         {
-            return GetView<TKey, TValue>(query(new ViewQuery(name, view)));
+            return GetView<TKey, TValue>(query(new ViewQuery(name, view, _serializer)));
         }
 
         public View<TKey, TValue> GetView<TKey, TValue>(string name, string view)
         {
-            return GetView<TKey, TValue>(new ViewQuery(name, view));
+            return GetView<TKey, TValue>(new ViewQuery(name, view, _serializer));
         }
         
         public MultiView<TKey> GetView<TKey>(ViewQuery query, Func<ISerializer, TKey, string, object> map)

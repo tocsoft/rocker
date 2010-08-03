@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Rocker.Json;
 
 namespace Rocker.Couch
 {
@@ -21,40 +22,42 @@ namespace Rocker.Couch
         private string _groupLevel;
         private bool? _group;
         private bool? _reduce;
-        public ViewQuery(string name, string view)
+        private ISerializer _serializer;
+        public ViewQuery(string name, string view,  ISerializer serializer)
         {
             _name = name;
             _view = view;
             _descending = false;
             _include_docs = false;
+            _serializer = serializer;
         }
 
-        public ViewQuery Key(string key)
+        public ViewQuery Key(object key)
         {
             if (_keys == null)
                 _keys = new List<string>();
             else
                 _multikey = true;
 
-            _keys.Add(key);
+            _keys.Add(_serializer.Serialize(key));
             
             return this;
         }
 
-        public ViewQuery Keys(string[] keys)
+        public ViewQuery Keys(IEnumerable<string> keys)
         {
             if (_keys == null)
                 _keys = new List<string>();
-
+            
             _keys.AddRange(keys);
             _multikey = true;
 
             return this;
         }
 
-        public ViewQuery EndKey(string key)
+        public ViewQuery EndKey(object key)
         {
-            _endKey = key;
+            _endKey = _serializer.Serialize(key);
             return this;
         }
 
