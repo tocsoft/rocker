@@ -144,7 +144,7 @@ namespace Rocker.Couch
 
         public IEnumerable<T> GetDocuments<T>(params string[] ids)
         {
-            var res = GetView<string, T>(new ViewQuery("", "", _serializer).SetUrlPattern("_all_docs").IncludeDocs().Keys(ids));
+            var res = GetView<string, T>(new ViewQuery("", "", _serializer).SetUrlPattern("_all_docs").IncludeDocs().EncodedKeys(ids));
             return res.rows.Select(x=>x.Doc);
         }
 

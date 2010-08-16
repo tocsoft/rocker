@@ -44,11 +44,22 @@ namespace Rocker.Couch
             return this;
         }
 
-        public ViewQuery Keys(IEnumerable<string> keys)
+        public ViewQuery Keys<T>(IEnumerable<T> keys)
         {
             if (_keys == null)
                 _keys = new List<string>();
             
+            _keys.AddRange(keys.Select(x=>_serializer.Serialize(x)));
+            _multikey = true;
+
+            return this;
+        }
+
+        internal ViewQuery EncodedKeys(IEnumerable<string> keys)
+        {
+            if (_keys == null)
+                _keys = new List<string>();
+
             _keys.AddRange(keys);
             _multikey = true;
 
