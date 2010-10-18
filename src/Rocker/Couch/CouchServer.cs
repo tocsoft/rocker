@@ -46,14 +46,14 @@ namespace Rocker.Couch
             if (string.IsNullOrEmpty(filter))
                 _client.DoRequest("_replicate", "POST", _serializer.Serialize(new
                 {
-                    source = string.Concat(from.ToUriString(true), "/", from.Database),
-                    target = string.Concat(to.ToUriString(true), "/", to.Database)
+                    source = string.Concat(from.ToUriString(true), "/", from["database"]),
+                    target = string.Concat(to.ToUriString(true), "/", to["database"])
                 }), "application/json");
             else
                 _client.DoRequest("_replicate", "POST", _serializer.Serialize(new
                 {
-                    source = string.Concat(from.ToUriString(true), "/", from.Database),
-                    target = string.Concat(to.ToUriString(true), "/", to.Database),
+                    source = string.Concat(from.ToUriString(true), "/", from["database"]),
+                    target = string.Concat(to.ToUriString(true), "/", to["database"]),
                     filter = filter,
                     query_params = filterquery
                 }), "application/json");

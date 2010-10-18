@@ -49,11 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="sig1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Rocker\Rocker.csproj">
       <Project>{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}</Project>
       <Name>Rocker</Name>

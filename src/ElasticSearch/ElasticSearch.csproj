@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{BC7CBCF0-5FCC-48CB-8422-7B03171AD367}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rocker</RootNamespace>
-    <AssemblyName>Rocker</AssemblyName>
+    <RootNamespace>ElasticSearch</RootNamespace>
+    <AssemblyName>ElasticSearch</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,17 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accessibility" />
-    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -52,35 +45,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Couch\CouchRevisionStore.cs" />
-    <Compile Include="Couch\RevisionInfo.cs" />
-    <Compile Include="Couch\CouchDatabase.cs" />
-    <Compile Include="Couch\CouchFactory.cs" />
-    <Compile Include="Couch\CouchServer.cs" />
-    <Compile Include="Couch\DatabaseInfo.cs" />
-    <Compile Include="Couch\DocumentInfo.cs" />
-    <Compile Include="Couch\Exceptions\CouchException.cs" />
-    <Compile Include="Couch\Map.cs" />
-    <Compile Include="Couch\View.cs" />
-    <Compile Include="Couch\ViewQuery.cs" />
-    <Compile Include="ElasticSearch\ElasticDataMapping.cs" />
-    <Compile Include="ElasticSearch\ElasticIndex.cs" />
-    <Compile Include="ElasticSearch\ElasticResults.cs" />
-    <Compile Include="ElasticSearch\ElasticSearchFactory.cs" />
-    <Compile Include="ElasticSearch\ElasticSearchQuery.cs" />
-    <Compile Include="ElasticSearch\ElasticServer.cs" />
-    <Compile Include="Json\ISerializer.cs" />
-    <Compile Include="Json\JsonSerializer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rest\ConnectionDetails.cs" />
-    <Compile Include="Rest\IRestClient.cs" />
-    <Compile Include="Rest\RestClient.cs" />
-    <Compile Include="Rest\RestException.cs" />
-    <Compile Include="StringExtentions.cs" />
-    <Compile Include="UriExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Couch\Interfaces\" />
+    <ProjectReference Include="..\Rocker\Rocker.csproj">
+      <Project>{CE473A1B-20B0-4BD4-9254-B41AB3DD649C}</Project>
+      <Name>Rocker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="documents\licence.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="documents\read me.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="documents\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="documents\RELEASE-NOTES.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

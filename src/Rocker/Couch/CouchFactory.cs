@@ -32,7 +32,7 @@ namespace Rocker.Couch
         {
             var conDetails = new ConnectionDetails(connectionString);
 
-            return ConnectToServer(conDetails).ConnectToDatabase(conDetails.Database);
+            return ConnectToServer(conDetails).ConnectToDatabase(conDetails["database"]);
         }
 
         public static void Replicate(this CouchServer server, string from, string to, string filter, object query)

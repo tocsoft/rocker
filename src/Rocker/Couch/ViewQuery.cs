@@ -39,7 +39,10 @@ namespace Rocker.Couch
             else
                 _multikey = true;
 
-            _keys.Add(_serializer.Serialize(key));
+            _keys.Add(
+
+                _serializer.Serialize(key)
+                );
             
             return this;
         }
@@ -158,21 +161,21 @@ namespace Rocker.Couch
                     RequestData = null;
                     if (string.IsNullOrEmpty(_endKey))
                     {
-                        q = AddQueryStirng(q, "key", _keys.First());
+                        q = q.AddQueryStirng( "key", _keys.First());
                     }
                     else
                     {
                         if (_descending)
                         {
-                            q = AddQueryStirng(q, "endkey", _keys.First());
+                            q = q.AddQueryStirng( "endkey", _keys.First());
 
-                            q = AddQueryStirng(q, "startkey", _endKey);
+                            q = q.AddQueryStirng( "startkey", _endKey);
                         }
                         else
                         {
-                            q = AddQueryStirng(q, "startkey", _keys.First());
+                            q = q.AddQueryStirng( "startkey", _keys.First());
 
-                            q = AddQueryStirng(q, "endkey", _endKey);
+                            q = q.AddQueryStirng( "endkey", _endKey);
                         }
                     }
                 }
@@ -185,40 +188,32 @@ namespace Rocker.Couch
             }
 
             if (_take.HasValue)
-                q = AddQueryStirng(q, "limit", _take.Value);
+                q = q.AddQueryStirng( "limit", _take.Value);
 
             if (_reduce.HasValue && !_reduce.Value)
-                q = AddQueryStirng(q, "reduce", "false");
+                q = q.AddQueryStirng( "reduce", "false");
 
             if (!_reduce.HasValue || _reduce.Value)
             {
                 if (!string.IsNullOrEmpty(_groupLevel))
-                    q = AddQueryStirng(q, "group_level", _groupLevel);
+                    q = q.AddQueryStirng("group_level", _groupLevel);
 
                 if (_group.HasValue)
                 {
                     if (_group.Value)
-                        q = AddQueryStirng(q, "group", "true");
+                        q = q.AddQueryStirng( "group", "true");
                     else
-                        q = AddQueryStirng(q, "group", "false");
+                        q = q.AddQueryStirng( "group", "false");
                 }
             }
             
             if (_skip.HasValue)
-                q = AddQueryStirng(q, "skip", _skip.Value);
+                q = q.AddQueryStirng("skip", _skip.Value);
             if (_descending)
-                q = AddQueryStirng(q, "descending", "true");
+                q = q.AddQueryStirng( "descending", "true");
             if (_include_docs)
-                q = AddQueryStirng(q, "include_docs", "true");
+                q = q.AddQueryStirng( "include_docs", "true");
             return q;
-        }
-
-        public string AddQueryStirng(string qs, string name, object value)
-        {
-            if (qs.Contains("?"))
-                return string.Concat(qs, "&", name, "=", value);
-            else
-                return string.Concat(qs, "?", name, "=", value);
         }
     }
 }

@@ -11,24 +11,22 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            CouchDatabase db = CouchFactory.ConnectToDatabase("rocker");
+            CouchDatabase db = CouchFactory.ConnectToDatabase("host=192.168.1.11;database=cutfilms");
+            
+            Comment c = db.GetDocument<Comment>("fb219a33-9447-41cb-ba3c-4475aff08119");
 
-            var lst = db.GetView<string, Profile>("profiles", "all");
+            db.UpdateDocument("fb219a33-9447-41cb-ba3c-4475aff08119", new { field = "Text", value = "txt" }, "General", "in-place");
 
-            db.SaveAttachment(lst.rows[0].Value,"sig1.png","image/png",File.Open("sig1.png", FileMode.Open));
+            Comment c1 = db.GetDocument<Comment>("fb219a33-9447-41cb-ba3c-4475aff08119");
 
-            db.GetAttachment(lst.rows[0].Value, "sig1.png");
         }
     }
 
-    public class Profile
+    public class Comment
     {
-        public Profile()
-        {
-            Stack = new Dictionary<string, string>();
-        }
-        public string Name { get; set; }
-        public Dictionary<string, string> Stack { get; set; }
+        public string Text { get; set; }
+        public string Removed { get; set; }
+        public string Id { get; set; }
     }
 
     public class Car

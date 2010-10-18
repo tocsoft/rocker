@@ -50,7 +50,7 @@ namespace Rocker.Json
 
         public string Serialize(object obj)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.None, _settings);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented, _settings);
         }
 
         #endregion

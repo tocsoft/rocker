@@ -94,6 +94,38 @@ namespace Rocker.Couch
             }
         }
 
+        public void UpdateDocument(RevisionInfo info, object values, string designDoc, string function)
+        {
+            UpdateDocument(info._id, values, designDoc, function);
+        }
+
+        public void UpdateDocument(string id, object values, string designDoc, string function)
+        {
+            try
+            {   string url = string.Format("_design/{0}/_update/{1}/{2}",designDoc, function, id);
+                Type t = values.GetType();
+                foreach(var p in t.GetProperties())
+                {
+                    url = url.AddQueryStirng(p.Name, p.GetValue(values,null));
+                }
+
+                string ret = _client.DoRequest(url, "PUT");
+            }
+            catch (Rest.RestException ex)
+            {
+                throw For(ex);
+            }
+        }
+
+        public void UpdateDocument(object item, object values, string designDoc, string function)
+        {
+            var rev = _revisionStore.Lookup(item);
+            if (rev == null)
+                throw new Exception("eek"); //throw real couch exception here.
+
+            UpdateDocument(rev._id, values, designDoc, function);
+        }
+
         public Stream GetAttachment<T>(T item, string path)
         {
             RevisionInfo info = GetInfo(item);

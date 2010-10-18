@@ -37,5 +37,15 @@ namespace Rocker
                         }
                     );
         }
+
+
+
+        internal static string AddQueryStirng(this string qs, string name, object value)
+        {
+            if (qs.Contains("?"))
+                return string.Concat(qs, "&", name, "=", value);
+            else
+                return string.Concat(qs, "?", name, "=", value);
+        }
     }
 }

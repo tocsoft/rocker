@@ -13,7 +13,7 @@ namespace Rocker.Rest
         ICredentials GetCredentials();
         string ToUriString(bool includeAuth);
 
-        string Database { get; set; }
+        string this[string key] { get; }
     }
 
     public class ConnectionDetails : IConnectionDetails
@@ -26,9 +26,17 @@ namespace Rocker.Rest
         public string Protocol { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
-        public string Database { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+
+        IDictionary<string, string> _values;
+
+        public string this[string key]
+        {
+            get {
+                return _values[key];
+            }
+        }
 
         public Uri ToUri()
         {
@@ -60,7 +68,7 @@ namespace Rocker.Rest
                 localconstring = connobject.ConnectionString;
             }
 
-            var vals = localconstring.ToDictionary(true);
+            var vals = _values = localconstring.ToDictionary(true);
 
             Protocol = _protocol;
             if (vals.ContainsKey("protcol"))
@@ -86,7 +94,6 @@ namespace Rocker.Rest
             if (vals.ContainsKey("password"))
                 Password = vals["password"];
 
-            Database = vals["database"];
         }
     }
 }

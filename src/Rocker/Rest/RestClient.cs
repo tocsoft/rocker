@@ -36,7 +36,7 @@ namespace Rocker.Rest
 
         public IRestClient SubClient(string path)
         {
-            return new RestClient(new Uri(Url, path));
+            return new RestClient(Url.AppendPart(path));
         }
 
         public string DoRequest(string query, string method)
@@ -99,6 +99,8 @@ namespace Rocker.Rest
             catch (WebException ex)
             {
                 HttpWebResponse resp = ex.Response as HttpWebResponse;
+                StreamReader sr = new StreamReader(resp.GetResponseStream());
+                string contents = sr.ReadToEnd();
                 throw new RestException(resp.StatusCode, resp.StatusDescription);
             }
             
