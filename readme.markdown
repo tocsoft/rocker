@@ -3,13 +3,13 @@ Rocker
 
 rocker is a wrapper library around the apache CouchDB document Database.
 
+also has support for querying elastic search service.
+
 ==Status==
 
-
-still In *very* early development. 
-
+should probably only use if willing and able to trackdown and fix bugs.
 
 
 ==ToDo==
 
-* support for authentication (just need to figure out how to work with cochDBs authenication model first)
+MOST things
